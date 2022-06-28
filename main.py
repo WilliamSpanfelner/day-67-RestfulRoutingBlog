@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -41,6 +43,24 @@ class CreatePostForm(FlaskForm):
 @app.route('/new-post', methods=['GET', 'POST'])
 def new_post():
     form = CreatePostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        subtitle = form.subtitle.data
+        submit_date = datetime.datetime.now().strftime('%B %d, %Y')
+        author = form.author.data
+        img_url = form.img_url.data
+        body = form.body.data
+        print(f"{submit_date} is type: {type(submit_date)}")
+        blog_post = BlogPost(title=title,
+                             subtitle=subtitle,
+                             date=submit_date,
+                             body=body,
+                             author=author,
+                             img_url=img_url)
+
+        db.session.add(blog_post)
+        db.session.commit()
+        return redirect('/')
     return render_template("make-post.html", form=form)
 
 
