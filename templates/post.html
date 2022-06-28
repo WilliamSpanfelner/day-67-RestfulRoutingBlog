@@ -1,5 +1,5 @@
 {% include 'header.html' %}
-        <header class="masthead" style="background-image: url({{ post.image_url }})">
+        <header class="masthead" style="background-image: url({{ post.img_url }})">
 <!--        <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">-->
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -7,6 +7,7 @@
                         <div class="post-heading">
                             <h1>{{ post.title }}</h1>
                             <h2 class="subheading">{{ post.subtitle }}</h2>
+                            <p> {{ post.img_url }} </p>
                             <span class="meta">
                                 Posted by
                                 <a href="#!">{{ post.author }}</a>
