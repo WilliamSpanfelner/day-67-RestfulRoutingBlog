@@ -38,6 +38,11 @@ class CreatePostForm(FlaskForm):
     submit = SubmitField("Submit Post")
 
 
+@app.route('/new-post')
+def new_post():
+    return render_template("make-post.html")
+
+
 @app.route('/')
 def get_all_posts():
     posts = BlogPost.query.all()
