@@ -67,10 +67,14 @@ def sanitize(content):
 
 @app.route('/edit-post/<int:index>', methods=['GET', 'POST'])
 def edit_post(index):
-    form = CreatePostForm()
-    print(f"post.id = {index}")
     requested_post = BlogPost.query.get(index)
-
+    form = CreatePostForm(
+        title=requested_post.title,
+        subtitle=requested_post.subtitle,
+        img_url=requested_post.img_url,
+        author=requested_post.author,
+        body=requested_post.body,
+    )
     return render_template('make-post.html', form=form, amend=True)
 
 
