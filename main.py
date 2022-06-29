@@ -83,7 +83,7 @@ def edit_post(index):
         requested_post.author = form.author.data
         requested_post.body = form.body.data
         db.session.commit()
-        return redirect(f'/post/{requested_post.id}')
+        return redirect(url_for("show_detail", index=requested_post.id))
 
     return render_template('make-post.html', form=form, amend=True)
 
