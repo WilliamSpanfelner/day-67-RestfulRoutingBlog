@@ -65,6 +65,15 @@ def sanitize(content):
     return cleaned
 
 
+@app.route('/edit-post/<int:index>', methods=['GET', 'POST'])
+def edit_post(index):
+    form = CreatePostForm()
+    print(f"post.id = {index}")
+    requested_post = BlogPost.query.get(index)
+
+    return render_template('make-post.html', form=form, post=requested_post)
+
+
 @app.route('/new-post', methods=['GET', 'POST'])
 def new_post():
     form = CreatePostForm()
@@ -87,7 +96,7 @@ def new_post():
         db.session.add(blog_post)
         db.session.commit()
         return redirect('/')
-    return render_template("make-post.html", form=form)
+    return render_template("make-post.html", form=form, post=None)
 
 
 @app.route('/')
