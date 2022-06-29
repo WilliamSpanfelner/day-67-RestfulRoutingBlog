@@ -71,7 +71,7 @@ def edit_post(index):
     print(f"post.id = {index}")
     requested_post = BlogPost.query.get(index)
 
-    return render_template('make-post.html', form=form, post=requested_post)
+    return render_template('make-post.html', form=form, amend=True)
 
 
 @app.route('/new-post', methods=['GET', 'POST'])
@@ -96,7 +96,7 @@ def new_post():
         db.session.add(blog_post)
         db.session.commit()
         return redirect('/')
-    return render_template("make-post.html", form=form, post=None)
+    return render_template("make-post.html", form=form)
 
 
 @app.route('/')
