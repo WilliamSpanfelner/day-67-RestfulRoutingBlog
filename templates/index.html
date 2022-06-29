@@ -28,9 +28,10 @@
                         Posted by
                         <a href="#!">{{ item.author }}</a>
                         on {{ item.date }}
+                        <a href="{{ url_for('delete', index=item.id) }}">✘</a>
                     </p>
-
                 </div>
+
                 <!-- Divider-->
                 <hr class="my-4" />
             {% endfor %}
