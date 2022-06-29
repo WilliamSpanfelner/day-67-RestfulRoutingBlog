@@ -1,5 +1,5 @@
 import datetime
-
+import bleach
 from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -40,6 +40,31 @@ class CreatePostForm(FlaskForm):
     submit = SubmitField("Submit Post")
 
 
+def sanitize(content):
+    """Returns 'clean' HTML content from CKEditor
+    content: text
+    return: text
+    """
+    allowed_tags = [
+        'a', 'abbr', 'acronym', 'address', 'b', 'br', 'div', 'dl', 'dt',
+        'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img',
+        'li', 'ol', 'p', 'pre', 'q', 's', 'small', 'strike',
+        'span', 'sub', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
+        'thead', 'tr', 'tt', 'u', 'ul'
+    ]
+
+    allowed_attrs = {
+        'a': ['href', 'target', 'title'],
+        'img': ['src', 'alt', 'width', 'height'],
+    }
+
+    cleaned = bleach.clean(content,
+                           tags=allowed_tags,
+                           attributes=allowed_attrs,
+                           strip=True)
+    return cleaned
+
+
 @app.route('/new-post', methods=['GET', 'POST'])
 def new_post():
     form = CreatePostForm()
@@ -49,12 +74,13 @@ def new_post():
         submit_date = datetime.datetime.now().strftime('%B %d, %Y')
         author = form.author.data
         img_url = form.img_url.data
-        body = form.body.data
-        print(f"{submit_date} is type: {type(submit_date)}")
+
+        body_content = sanitize(form.body.data)
+
         blog_post = BlogPost(title=title,
                              subtitle=subtitle,
                              date=submit_date,
-                             body=body,
+                             body=body_content,
                              author=author,
                              img_url=img_url)
 
