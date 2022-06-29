@@ -75,6 +75,16 @@ def edit_post(index):
         author=requested_post.author,
         body=requested_post.body,
     )
+
+    if form.validate_on_submit():
+        requested_post.title = form.title.data
+        requested_post.subtitle = form.subtitle.data
+        requested_post.img_url = form.img_url.data
+        requested_post.author = form.author.data
+        requested_post.body = form.body.data
+        db.session.commit()
+        return redirect(f'/post/{requested_post.id}')
+
     return render_template('make-post.html', form=form, amend=True)
 
 
