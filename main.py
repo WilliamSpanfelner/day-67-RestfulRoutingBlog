@@ -65,6 +65,14 @@ def sanitize(content):
     return cleaned
 
 
+@app.route('/delete/<index>')
+def delete(index):
+    post_to_delete = BlogPost.query.get(index)
+    db.session.delete(post_to_delete)
+    db.session.commit()
+    return redirect('/')
+
+
 @app.route('/edit-post/<int:index>', methods=['GET', 'POST'])
 def edit_post(index):
     requested_post = BlogPost.query.get(index)
